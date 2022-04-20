@@ -1,0 +1,4 @@
+include classroomContactApi/schema.sql
+graft classroomContactApi/static
+graft classroomContactApi/templates
+global-exclude *.pyc
