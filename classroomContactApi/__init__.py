@@ -28,7 +28,7 @@ def create_app(test_config=None):
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
-    
+
     # setup databases
     from . import db
     db.init_app(app)
@@ -36,16 +36,15 @@ def create_app(test_config=None):
     from . import api
     app.register_blueprint(api.bp)
 
-    
     return app
 
 def _build_cors_preflight_response():
-        response = make_response()
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add("Access-Control-Allow-Headers", "*")
-        response.headers.add("Access-Control-Allow-Methods", "*")
-        response.headers.add("Access-Control-Max-Age", 60)
-        return response
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "*")
+    response.headers.add("Access-Control-Allow-Methods", "*")
+    response.headers.add("Access-Control-Max-Age", 60)
+    return response
 
 def _corsify_actual_response(response):
     response.headers.add("Access-Control-Allow-Origin", "*")

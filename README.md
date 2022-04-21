@@ -30,31 +30,73 @@ Alternately, just run using vscode configuration (see launch.json)
 
 ### Production
 
-#### IIS Webserver
+#### Windows / IIS Webserver
+
+Setting up on a Windows/IIS webserver is the expected deployment option, but is messy and takes a lot of faffing, debugging, etc. The following steps _should_ get everything working. YMMV.
 
 1. Download + install Python to `C:\Python[vvv]`
 2. Create a project directory in `C:\inetpub\wwwroot\classroomContactApi` if it doesn't exist already, or `git clone` this project within `\wwwroot\` to create and copy files to the correct location
 3. Set up a virtual environment (within `C:\inetpub\wwwroot\classroomContactApi`):
 
 ```powershell
-PS C:\inetpub\wwwroot\classroomContactApi> python venv .\venv
+PS C:\inetpub\wwwroot\classroomContactApi> python -m venv .\venv
 ```
 
 4. Activate the virtual environment:
 
 ```powershell
-> .\venv\Scripts\Activate.ps1
+> .\venv\Scripts\activate
 ```
 
 5. Copy project files / check out git repository to location
 6. Install wfastcgi
 
 ```powershell
-(venv) > pip install wfastcgi
+(venv) > python -m pip install classroomContactApi, wfastcgi
 ```
 
-7. Set up FastCGI handler in IIS Manager
+7. Enable wfastcgi as a scrpit processor in IIS
 
-#### Everything Else
+```powershell
+(venv) > wfastcgi-enable
+```
 
-Just read the Flask deployment documentation.
+8. Go to IIS Settings, FastCGI settings, configure fast CGI setting for the added application:
+    - Set Environment Variables (collection) to contain the following: (Be careful of slash ( `\` `/` ) directions)
+      - `WSGI_HANDLER` : `classroomContactApi.app`
+      - `PYTHONPATH` : `C:\inetpub\wwwroot\classroomContactApi`
+      - `SCRIPT_NAME` : `/classroomContactApi`
+        - ⚠ Note: this must match the subdirectory under which th Flask WSGI Application will be served by IIS. Omit if this is running on your server's root
+        - This is not documented under wfastcgi, found setting suggestion on stackoverflow somewhere
+      - (for debugging ONLY) `WSGI_LOG` : `C:\inetpub\logs\wsgi\classroomContactApi.log`
+        - ⚠ Note: You must create and grant the IIS_IUSRS full write permission on whatever log file you create, otherwise the WSGI process will fail to launch (can't start to write to the log, will fail with access denied to directory / file) leading to mysterious 500 server errors from IIS (there won't be helpful logs about the crash from IIS)
+9. Add a handler mapping to the site - Handler Mappings (classroomContactApi) -> Add Module Mapping
+    - Request path: `*`
+    - Module: FastCGIModule
+    - Executable: `C:\inetpub\wwwroot\classroomContactApi\venv\Scripts\python.exe|C:\inetpub\wwwroot\classroomContactApi\venv\Lib\site-packages\wfastcgi.py`
+10. Set Handler Mapping -> Request Restrictions
+    - UN-check "Invoke handler only if request is mapped to"
+    - Verbs tab -> "All"
+    - Access tab -> "Script"
+11. When closing, if it asks to create a FastCGI application for this mapping, select No
+12. Switch the Handler Mappings view in IIS Manager to the ordered list, and put the Python handler at the very top of the list, above all others, so that something else, like PHP doesn't try to serve anything from this application.
+13. Set up the site folder as an application (right-click, convert to application)
+14. Create an application pool, setting the identity of the application pool to use an account that has access to the SQL Server database. This will be the context within which Python/pyodbc will pass the connection identity to the database for authentication using the "TrustedConnection=True" connection parameter (Windows integrated authentication)
+15. Set (if not already) the same account as a member of the local "IIS_IUSRS" group on the webserver (via lusrmgr.msc)
+16. Set the application to use the created application pool as set up in the previous steps (via Right-click application in IIS Manager > Manage Application > Advanced Settings...)
+
+17. Add site path to the list of shibboleth sites (if applicable) in the shibboleth configuration (located in `C:\opt\shibboleth-sp\etc\shibboleth\shibboleth2.xml`)
+
+```xml
+  <Path name="classroomcontactapi" authType="shibboleth" requireSession="true">
+      <AccessControl>
+          <Rule require="gws_groups">[control / access group]</Rule>
+      </AccessControl>              
+  </Path> 
+```
+
+18. Restart the shibboleth daemon / service
+
+#### Every other kind of web server (apache, nginx, etc)
+
+Just read the Flask deployment documentation. Note, however, that running this particular application in a Non-Windows environment will require changes to how the SQL Server database is accessed. Make necessary changes to `db.py`.
