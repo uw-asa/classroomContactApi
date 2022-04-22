@@ -4,6 +4,7 @@ from flask.json import jsonify
 
 from classroomContactApi import _corsify_actual_response, options_preflight
 from classroomContactApi.db import query_edw
+from classroomContactApi.cache import cache
 bp = Blueprint('room_info', __name__)
 
 from flask.json import jsonify
@@ -22,5 +23,6 @@ SELECT trim([sr_room_bldg]) as bld
 
 @bp.route('/room_info.json', methods=['GET', 'OPTIONS'])
 @options_preflight
+@cache.cached(timeout=500, key_prefix='room_info')
 def get_room_info():
     return _corsify_actual_response(jsonify(query_edw(sql_statement)))

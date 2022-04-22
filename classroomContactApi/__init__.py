@@ -36,6 +36,9 @@ def create_app(test_config=None):
     from . import api
     app.register_blueprint(api.bp)
 
+    from .cache import cache
+    cache.init_app(app)
+
     return app
 
 def _build_cors_preflight_response():

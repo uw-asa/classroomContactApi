@@ -4,13 +4,14 @@ from flask.json import jsonify
 
 from classroomContactApi import _corsify_actual_response, options_preflight
 from classroomContactApi.db import query_edw
+from classroomContactApi.cache import cache
 bp = Blueprint('quarter_rooms', __name__)
 
 
 @bp.route('/quarter_rooms.json', methods=['GET', 'OPTIONS'])
 @options_preflight
+@cache.cached(timeout=500, key_prefix='quarter_rooms', query_string=True)
 def get_quarter_rooms():
-
     sql_statement = '''
         SELECT DISTINCT
             trim(building) as building

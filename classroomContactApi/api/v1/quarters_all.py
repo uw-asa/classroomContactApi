@@ -4,6 +4,7 @@ from flask.json import jsonify
 
 from classroomContactApi import _corsify_actual_response, options_preflight
 from classroomContactApi.db import query_edw
+from classroomContactApi.cache import cache
 bp = Blueprint('quarters_all', __name__)
 
 from flask.json import jsonify
@@ -46,5 +47,6 @@ ORDER BY aq.AcademicQtrKeyId DESC;
 
 @bp.route('/quarters_all.json', methods=['GET', 'OPTIONS'])
 @options_preflight
+@cache.cached(timeout=500, key_prefix='all_quarters')
 def get_all_quarters():
     return _corsify_actual_response(jsonify(query_edw(sql_statement)))

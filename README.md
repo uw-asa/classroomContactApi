@@ -6,6 +6,8 @@ A Python / Flask implementation of an API that communicates with edwpub and loca
 
 This project is a re-implementation of the original classroom contacts api, which was written in PHP. New features will be implemented in this project, but the overall project is still highly under construction. Specific needs for the project are things like tests, error handling, API documentation, and project documentation.
 
+Requests use local filesystem cache files to accelerate requests that return a lot of the same data / data that rarely changes, and to reduce the number of round trips to the database. This can take requests down from approximately 300ms to 10ms.
+
 ## Setup Environments
 
 ### Development
