@@ -57,7 +57,7 @@ PS C:\inetpub\wwwroot\classroomContactApi> python -m venv .\venv
 (venv) > python -m pip install classroomContactApi, wfastcgi
 ```
 
-7. Enable wfastcgi as a scrpit processor in IIS
+7. Enable wfastcgi as a script processor in IIS
 
 ```powershell
 (venv) > wfastcgi-enable

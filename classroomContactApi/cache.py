@@ -1,4 +1,11 @@
 #! python3
+'''Chase Sawyer, 2022
+University of Washington
+Academic and Student Affairs, Information Services
+
+Flask cache utility module. Configures pluggable filesystem -based request caching.
+'''
+
 import os
 from flask_caching import Cache
 

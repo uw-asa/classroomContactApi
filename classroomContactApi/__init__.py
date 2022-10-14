@@ -1,4 +1,11 @@
 #! python3
+'''Chase Sawyer, 2022
+University of Washington
+Academic and Student Affairs, Information Services
+
+Flask application root for the classroom contacts tool api.
+'''
+
 import os
 import functools
 from flask import Flask, request, make_response

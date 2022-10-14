@@ -1,4 +1,12 @@
 #! python3
+'''Chase Sawyer, 2022
+University of Washington
+Academic and Student Affairs, Information Services
+
+API - queries EDW for building codes and room numbers on the Seattle campus.
+Caches data for 10 seconds
+'''
+
 from flask import Blueprint
 from flask.json import jsonify
 
@@ -23,6 +31,6 @@ SELECT trim([sr_room_bldg]) as bld
 
 @bp.route('/room_info.json', methods=['GET', 'OPTIONS'])
 @options_preflight
-@cache.cached(timeout=500, key_prefix='room_info')
+@cache.cached(timeout=10000, key_prefix='room_info')
 def get_room_info():
     return _corsify_actual_response(jsonify(query_edw(sql_statement)))

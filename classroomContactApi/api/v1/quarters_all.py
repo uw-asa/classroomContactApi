@@ -1,4 +1,12 @@
 #! python3
+'''Chase Sawyer, 2022
+University of Washington
+Academic and Student Affairs, Information Services
+
+Flask blueprint for returning all quarters within a relative range to the current time
+from the EDW, then sorts them in proper chronological order before sorting them.
+'''
+
 from flask import Blueprint
 from flask.json import jsonify
 
@@ -47,6 +55,6 @@ ORDER BY aq.AcademicQtrKeyId DESC;
 
 @bp.route('/quarters_all.json', methods=['GET', 'OPTIONS'])
 @options_preflight
-@cache.cached(timeout=500, key_prefix='all_quarters')
+@cache.cached(timeout=2000, key_prefix='all_quarters')
 def get_all_quarters():
     return _corsify_actual_response(jsonify(query_edw(sql_statement)))

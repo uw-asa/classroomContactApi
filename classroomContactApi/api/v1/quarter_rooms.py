@@ -1,4 +1,12 @@
 #! python3
+'''Chase Sawyer, 2022
+University of Washington
+Academic and Student Affairs, Information Services
+
+Gathers the distinct rooms that are scheduled for a particular quarter and year, selected by the user.
+This way the following queries can only select from rooms that have classes actually scheduled in them.
+'''
+
 from flask import Blueprint, request
 from flask.json import jsonify
 
@@ -10,7 +18,7 @@ bp = Blueprint('quarter_rooms', __name__)
 
 @bp.route('/quarter_rooms.json', methods=['GET', 'OPTIONS'])
 @options_preflight
-@cache.cached(timeout=500, key_prefix='quarter_rooms', query_string=True)
+@cache.cached(timeout=2000, key_prefix='quarter_rooms', query_string=True)
 def get_quarter_rooms():
     sql_statement = '''
         SELECT DISTINCT

@@ -1,4 +1,11 @@
 #! python3
+'''Chase Sawyer, 2022
+University of Washington
+Academic and Student Affairs, Information Services
+
+Returns a static list of rooms that classify as belonging to ASA, as this information is not
+easily stored anywhere else (at least not reliably).
+'''
 from flask import Blueprint
 from flask.json import jsonify
 

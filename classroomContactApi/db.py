@@ -1,4 +1,12 @@
 #! python3
+'''Chase Sawyer, 2022
+University of Washington
+Academic and Student Affairs, Information Services
+
+Flask database connection utility module. Handles setting up, tearing down, and interfacing with
+application databases.
+'''
+
 import sqlite3
 import pyodbc
 import click
