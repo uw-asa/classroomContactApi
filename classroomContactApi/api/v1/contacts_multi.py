@@ -17,7 +17,19 @@ def get_contacts_multi():
             , mt.section_id
             , ts.sln
             ,COALESCE(
-                p.PreferredName
+                -- Set up situation where a preferred First / Last name is used, use that
+		        -- otherwise fall back to other sources
+                CASE WHEN
+                    LEN(CONCAT_WS(', ', TRIM(p.PreferredLastName), TRIM(p.PreferredFirstName))) < 1 
+                    THEN null 
+                    ELSE CONCAT_WS(', ', TRIM(p.PreferredLastName), TRIM(p.PreferredFirstName))
+                END
+                -- Same with display First / Last
+                , CASE WHEN
+                    LEN(CONCAT_WS(', ', TRIM(p.DisplayLastName), TRIM(p.DisplayFirstName))) < 1 
+                    THEN null 
+                    ELSE CONCAT_WS(', ', TRIM(p.DisplayLastName), TRIM(p.DisplayFirstName))
+                END
                 , p.DisplayName
                 , i.instr_name
                 , ci.fac_name
@@ -45,7 +57,7 @@ def get_contacts_multi():
             ci.fac_ssn = i.instr_ssn
             AND ci.fac_yr = i.instr_yr
             AND ci.fac_qtr = i.instr_qtr
-        LEFT JOIN ODS.sec.Person p ON 
+        LEFT JOIN UWODS.sec.Person p ON 
             p.EmployeeID = ci.fac_ssn
         LEFT JOIN 
             (SELECT DISTINCT
