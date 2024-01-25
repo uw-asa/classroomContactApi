@@ -170,6 +170,7 @@ caams_rooms = [
     'SIG 225',
     'SIG 226',
     'SIG 227',
+    'SIG 228',
     'SIG 229',
     'SIG 230',
     'SMI 205',
