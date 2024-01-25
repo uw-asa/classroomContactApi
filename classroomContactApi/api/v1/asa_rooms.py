@@ -12,8 +12,6 @@ from flask.json import jsonify
 from classroomContactApi import _corsify_actual_response, options_preflight
 bp = Blueprint('asa_rooms', __name__)
 
-from flask.json import jsonify
-
 asa_rooms = [
     'AND 008',
     'AND 010',

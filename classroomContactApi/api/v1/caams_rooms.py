@@ -12,8 +12,6 @@ from flask.json import jsonify
 from classroomContactApi import _corsify_actual_response, options_preflight
 bp = Blueprint('caams_rooms', __name__)
 
-from flask.json import jsonify
-
 caams_rooms = [
     'ARC 147',
     'ARC 160',
@@ -70,6 +68,9 @@ caams_rooms = [
     'FSH 107',
     'FSH 108',
     'FSH 109',
+    'GLD 322',
+    'GLD 435',
+    'GLD 436',
     'GUG 204',
     'GUG 218',
     'GUG 220',
@@ -122,6 +123,12 @@ caams_rooms = [
     'MGH 291',
     'MGH 295',
     'MGH 389',
+    'MLR 301',
+    'MLR 316',
+    'MOR 221',
+    'MOR 225',
+    'MOR 230',
+    'MOR 234',
     'NAN 181',
     'PAR 120',
     'PAR 160',
@@ -155,6 +162,13 @@ caams_rooms = [
     'SAV 169',
     'SAV 260',
     'SAV 264',
+    'SIG 134',
+    'SIG 224',
+    'SIG 225',
+    'SIG 226',
+    'SIG 227',
+    'SIG 229',
+    'SIG 230',
     'SMI 205',
     'SMI 211',
     'SWS 026',
