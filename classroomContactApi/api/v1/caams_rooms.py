@@ -128,6 +128,7 @@ caams_rooms = [
     'MGH 389',
     'MLR 301',
     'MLR 316',
+    'MOR 220',
     'MOR 221',
     'MOR 225',
     'MOR 230',
