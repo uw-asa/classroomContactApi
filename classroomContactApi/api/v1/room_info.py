@@ -15,8 +15,6 @@ from classroomContactApi.db import query_edw
 from classroomContactApi.cache import cache
 bp = Blueprint('room_info', __name__)
 
-from flask.json import jsonify
-
 sql_statement = '''
 SELECT trim([sr_room_bldg]) as bld
     ,trim([sr_room_room_no]) as rm_no

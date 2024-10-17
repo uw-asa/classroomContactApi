@@ -275,6 +275,7 @@ asa_rooms = [
     'SMI 405',
     'SMI 407',
     'SWS 026',
+    'SWS 026-030',
     'SWS 030',
     'SWS 032',
     'SWS 036',

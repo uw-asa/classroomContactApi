@@ -179,6 +179,7 @@ caams_rooms = [
     'SMI 205',
     'SMI 211',
     'SWS 026',
+    'SWS 026-030',
     'SWS 030',
     'SWS 032',
     'SWS 036',
